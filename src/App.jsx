@@ -44,19 +44,18 @@ function App() {
         }
         const df = eval(`${d1} ${operands[operand]} ${d2}`);
 
-        const bin = (x) => (x <= 1 && x) || `${x % 2}${bin(Math.floor(x / 2))}`;
-        bf =
-            df > 1
-                ? `${bin(df)}0`.split("").reverse().pop().join("")
-                : df >= 0
-                ? `${df}`
-                : "error";
+        const bin = (x) =>
+            x <= 1 ? `${x}` : `${x % 2}${bin(Math.floor(x / 2))}`;
+        bf = df >= 0 ? bin(df).split("").reverse().join("") : "error";
 
         setOperation(bf);
         setOperand("");
     }, [operand, operation, blink]);
 
-    const clear = useCallback(() => setOperation(""), [setOperation]);
+    const clear = useCallback(
+        () => setOperation("") && setOperand(""),
+        [setOperation]
+    );
 
     const change = useCallback(
         (e) => setOperation((x) => `${x}${e.target.value}`),
